@@ -71,3 +71,26 @@ body {
     margin-right: .8em;
     border-radius: 4px 0 0 4px;
 }
+
+.rounded-icon {
+    display: inline-block;
+    vertical-align: top;
+    -webkit-border-radius:;
+    -moz-border-radius:;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.used-skills {
+    height: 90px;
+}
+
+.used-skills li {
+    float: left;
+    list-style-type: none;
+}
+
+.current-skill {
+    width: 100px;
+    margin: 0 auto;
+}

@@ -1,29 +1,36 @@
 <h1>{{title}}</h1>
-<h2><pre>{{selectedMainSkill | json}}</pre></h2>
-<ul>
-    <li *ngFor="let key of usedSkills">
-        {{key.key}}
+<ul class="used-skills">
+    <li *ngFor="let skill of usedSkills">
+        <span class="rounded-icon">
+            <img src="{{skill.imgUrl}}" alt="{{skill.key}}" width="90" height="90">
+        </span>
     </li>
 </ul>
-
-<div *ngIf="currentSkill"><strong>{{currentSkill.name}}</strong></div>
-
-<ul class="main-skills">
-    <li *ngFor="let mainSkill of mainSkills">
-        <span>{{mainSkill.name}}</span><br>
-        <a href="#" (click)="onClickMainSkill(mainSkill)">
-            <img src="{{mainSkill.imgUrl}}" alt="{{mainSkill.key}}" width="90" height="90">
-        </a>
-    </li>
-</ul>
-
-
-
 
 <ul class="skills">
     <li *ngFor="let skill of skills"
         [class.selected]="skill === selectedSkill"
         (click)="onSelect(skill)">
         <span class="badge">{{skill.id}}</span> {{skill.name}}, {{skill.keys}}<br>
+    </li>
+</ul>
+
+<div class="current-skill" *ngIf="currentSkill">
+    <strong>{{currentSkill.name}}</strong><br>
+    <img src="{{currentSkill.imgUrl}}" alt="{{currentSkill.name}}" width="90" height="90">
+</div>
+
+<ul class="main-skills">
+    <li *ngFor="let mainSkill of mainSkills">
+        <span>{{mainSkill.name}}: {{mainSkill.key | uppercase}}</span><br>
+        <a href="#" (click)="onClickMainSkill(mainSkill)">
+            <img src="{{mainSkill.imgUrl}}" alt="{{mainSkill.key}}" width="90" height="90">
+        </a>
+    </li>
+    <li>
+        <span>Invoke: R</span><br>
+        <a href="#" >
+            <img src="http://cdn.dota2.com/apps/dota2/images/abilities/invoker_invoke_hp1.png?v=3695960" alt="Invoke" width="90" height="90">
+        </a>
     </li>
 </ul>
