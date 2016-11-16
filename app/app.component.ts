@@ -1,37 +1,98 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
-import { Skill } from './skill';
-
-const SKILLS: Skill[] = [
-    {id: 1, name: 'alarcity'},
-    {id: 2, name: 'alarcity12'},
-    {id: 3, name: 'alarcity23'},
-    {id: 4, name: 'alarcity34'},
-    {id: 5, name: 'alarcity45'}
-];
+import { Skill, MainSkill } from './skill';
+import { SkillService } from './skill.service';
 
 @Component({
     selector: 'my-app',
-    template:  `
-    <h1>{{title}}</h1>
-    
-    <my-skill-detail [skill]="selectedSkill"></my-skill-detail>
-    
-    <ul class="heroes">
-      <li *ngFor="let skill of skills"
-        [class.selected]="skill === selectedSkill"
-        (click)="onSelect(skill)">
-        <span class="badge">{{skill.id}}</span> {{skill.name}}
-      </li>
-    </ul>
-    `
+    templateUrl:  'app/home.html',
+    providers: [SkillService]
 })
 
 export class AppComponent {
     title = 'Invoker Trainer';
-    skills = SKILLS;
+    mainSkills: MainSkill[];
+    skills: Skill[];
     selectedSkill: Skill;
+    selectedMainSkill: MainSkill;
+    usedSkills: MainSkill[] = [];
+    currentSkill: Skill;
+
+    constructor(private skillServie: SkillService) {
+    }
+
+    getSkills(): void {
+        this.skillServie.getSkills().then(skills => {
+            this.skills = skills;
+        });
+    }
+
+    getMainSKills(): void {
+        this.skillServie.getMainSkills().then(mainSkills => {
+            this.mainSkills = mainSkills;
+        });
+    }
+
+    ngOnInit(): void {
+        this.getSkills();
+        this.getMainSKills();
+        this.initKeyEvent();
+    }
+
     onSelect(skill: Skill): void {
         this.selectedSkill = skill;
     }
+
+    onClickMainSkill(skill: MainSkill): void {
+        this.selectedMainSkill = skill;
+    }
+
+    reduceEelements(arr) {
+        return arr.reduce((previousValue, currentValue) => {
+            if(currentValue === 'q') return previousValue + 10;
+            if(currentValue === 'w') return previousValue + 100;
+            if(currentValue === 'e') return previousValue + 1000;
+            return previousValue;
+        }, 0);
+    }
+
+    getCurrentSkill(currentSum) {
+        let result = null;
+        this.skills.forEach(elem => {
+            let x = elem.keys.split("");
+            if(currentSum === this.reduceEelements(x)) {
+                result = elem;
+            }
+        });
+        return result;
+    }
+
+    initKeyEvent(): void {
+        window.addEventListener("keypress", (e) => {
+
+            this.mainSkills.map(elem => {
+                if(elem.key === e.key) {
+                    this.selectedMainSkill = elem;
+                    if (this.usedSkills.length === 3) {
+                        this.usedSkills.shift();
+                        this.usedSkills.push(this.selectedMainSkill);
+                    } else {
+                        this.usedSkills.push(this.selectedMainSkill);
+                    }
+                }
+            });
+
+            if(e.key === 'r' && this.usedSkills.length === 3) {
+
+                let currentSum = this.reduceEelements(this.usedSkills.map(el => el.key));
+
+                this.currentSkill = this.getCurrentSkill(currentSum);
+
+            }
+
+        })
+    }
+
+
+
 }

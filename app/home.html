@@ -1,0 +1,29 @@
+<h1>{{title}}</h1>
+<h2><pre>{{selectedMainSkill | json}}</pre></h2>
+<ul>
+    <li *ngFor="let key of usedSkills">
+        {{key.key}}
+    </li>
+</ul>
+
+<div *ngIf="currentSkill"><strong>{{currentSkill.name}}</strong></div>
+
+<ul class="main-skills">
+    <li *ngFor="let mainSkill of mainSkills">
+        <span>{{mainSkill.name}}</span><br>
+        <a href="#" (click)="onClickMainSkill(mainSkill)">
+            <img src="{{mainSkill.imgUrl}}" alt="{{mainSkill.key}}" width="90" height="90">
+        </a>
+    </li>
+</ul>
+
+
+
+
+<ul class="skills">
+    <li *ngFor="let skill of skills"
+        [class.selected]="skill === selectedSkill"
+        (click)="onSelect(skill)">
+        <span class="badge">{{skill.id}}</span> {{skill.name}}, {{skill.keys}}<br>
+    </li>
+</ul>

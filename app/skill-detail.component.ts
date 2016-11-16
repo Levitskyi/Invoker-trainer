@@ -7,6 +7,7 @@ import { Skill } from './skill';
     <div *ngIf="skill">
       <h2>{{skill.name}} details!</h2>
       <div><label>id: </label>{{skill.id}}</div>
+      <div><label>keys: </label>{{skill.keys}}</div>
       <div>
         <label>name: </label>
         <input [(ngModel)]="skill.name" placeholder="name"/>
