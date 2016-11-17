@@ -1,4 +1,6 @@
 <h1>{{title}}</h1>
+<button type="button" (click)="startTimer()">Start : {{ticks}}</button>
+<button type="button" (click)="getRandomSkill()">random skill</button>
 <ul class="used-skills">
     <li *ngFor="let skill of usedSkills">
         <span class="rounded-icon">

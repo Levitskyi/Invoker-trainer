@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {TimerObservable} from "rxjs/observable/TimerObservable";
 
 import { Skill, MainSkill } from './skill';
 import { SkillService } from './skill.service';
@@ -17,11 +18,13 @@ export class AppComponent {
     selectedMainSkill: MainSkill;
     usedSkills: MainSkill[] = [];
     currentSkill: Skill;
+    ticks = 0;
+    randomSkill: Skill;
 
     constructor(private skillServie: SkillService) {
     }
 
-    getSkills(): void {
+    getSkills() {
         this.skillServie.getSkills().then(skills => {
             this.skills = skills;
         });
@@ -93,6 +96,25 @@ export class AppComponent {
         })
     }
 
+    startTimer() {
+        let timer = TimerObservable.create(0,1000);
+        let subscription = timer.subscribe(t=>{
+            this.ticks = t;
+            this.getRandomSkill();
+            if(this.ticks === 10) subscription.unsubscribe();
+        });
+    }
+
+    getRandomSkill(): void {
+        let randomSkill;
+        randomSkill = this.skills[Math.floor(Math.random()*this.skills.length)];
+        if(this.randomSkill === randomSkill) {
+            this.getRandomSkill();
+        } else {
+            console.log(randomSkill);
+            this.randomSkill = randomSkill;
+        }
+    }
 
 
 }

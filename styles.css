@@ -11,10 +11,15 @@ h2, h3 {
 }
 body {
     margin: 2em;
+    /*background: #000 url(images/invoker_bg.jpg) no-repeat;*/
+    background-size: cover;
+    background-position: center;
+    color: #fff;
 }
 
 .main-skills {
     float: left;
+    margin-top: 40px;
 }
 
 .main-skills li {
@@ -43,6 +48,7 @@ body {
     padding: .3em 0;
     height: 1.6em;
     border-radius: 4px;
+    color: #000;
 }
 .skills li.selected:hover {
     background-color: #BBD8DC !important;
@@ -92,5 +98,13 @@ body {
 
 .current-skill {
     width: 100px;
+    margin-left: 180px;
+    margin-top: 100px;
+    display: inline-block;
+}
+
+button {
+    display: block;
+    width: 90px;
     margin: 0 auto;
 }
