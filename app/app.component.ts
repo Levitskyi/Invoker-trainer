@@ -18,8 +18,11 @@ export class AppComponent {
     selectedMainSkill: MainSkill;
     usedSkills: MainSkill[] = [];
     currentSkill: Skill;
-    ticks = 0;
+    ticks: number = 0;
     randomSkill: Skill;
+    counterSkills: number = 0;
+    gameFlag: boolean = true;
+    modalIsOpen: boolean = false;
 
     constructor(private skillServie: SkillService) {
     }
@@ -72,48 +75,65 @@ export class AppComponent {
 
     initKeyEvent(): void {
         window.addEventListener("keypress", (e) => {
-
-            this.mainSkills.map(elem => {
-                if(elem.key === e.key) {
-                    this.selectedMainSkill = elem;
-                    if (this.usedSkills.length === 3) {
-                        this.usedSkills.shift();
-                        this.usedSkills.push(this.selectedMainSkill);
-                    } else {
-                        this.usedSkills.push(this.selectedMainSkill);
+            if(this.gameFlag) {
+                this.mainSkills.map(elem => {
+                    if(elem.key === e.key) {
+                        this.selectedMainSkill = elem;
+                        if (this.usedSkills.length === 3) {
+                            this.usedSkills.shift();
+                            this.usedSkills.push(this.selectedMainSkill);
+                        } else {
+                            this.usedSkills.push(this.selectedMainSkill);
+                        }
                     }
+                });
+
+                if(e.key === 'r' && this.usedSkills.length === 3) {
+
+                    let currentSum = this.reduceEelements(this.usedSkills.map(el => el.key));
+
+                    this.currentSkill = this.getCurrentSkill(currentSum);
+
+                    if(this.currentSkill.id === this.randomSkill.id) {
+                        this.counterSkills++;
+                        this.getRandomSkill();
+                    }
+
                 }
-            });
-
-            if(e.key === 'r' && this.usedSkills.length === 3) {
-
-                let currentSum = this.reduceEelements(this.usedSkills.map(el => el.key));
-
-                this.currentSkill = this.getCurrentSkill(currentSum);
-
             }
-
         })
     }
 
-    startTimer() {
+    startTimer(): void {
+        this.getRandomSkill();
+        this.gameFlag = true;
+        this.counterSkills = 0;
+
         let timer = TimerObservable.create(0,1000);
         let subscription = timer.subscribe(t=>{
             this.ticks = t;
-            this.getRandomSkill();
-            if(this.ticks === 10) subscription.unsubscribe();
+            if(this.ticks === 10) {
+                subscription.unsubscribe();
+                this.gameFlag = false;
+                this.modalIsOpen = true;
+                this.ticks = 0;
+            }
         });
     }
 
     getRandomSkill(): void {
-        let randomSkill;
-        randomSkill = this.skills[Math.floor(Math.random()*this.skills.length)];
+        let randomSkill = this.skills[Math.floor(Math.random()*this.skills.length)];
         if(this.randomSkill === randomSkill) {
             this.getRandomSkill();
         } else {
-            console.log(randomSkill);
             this.randomSkill = randomSkill;
         }
+    }
+
+    restartGame(): void {
+        this.gameFlag = true;
+        this.startTimer();
+        this.counterSkills = 0;
     }
 
 

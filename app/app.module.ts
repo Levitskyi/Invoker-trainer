@@ -1,18 +1,23 @@
 import { NgModule }      from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule }   from '@angular/forms';
+import { RouterModule, Routes } from '@angular/router';
 
 import { AppComponent }  from './app.component';
-import { SkillDetailComponent } from './skill-detail.component';
 
 @NgModule({
     imports: [
         BrowserModule,
-        FormsModule
+        FormsModule,
+        RouterModule.forRoot([
+            {
+                path: '',
+                component: AppComponent
+            }
+        ])
     ],
     declarations: [
-        AppComponent,
-        SkillDetailComponent
+        AppComponent
     ],
     bootstrap: [ AppComponent ]
 })

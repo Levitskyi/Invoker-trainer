@@ -1,6 +1,8 @@
 <h1>{{title}}</h1>
 <button type="button" (click)="startTimer()">Start : {{ticks}}</button>
-<button type="button" (click)="getRandomSkill()">random skill</button>
+<button type="button" (click)="getRandomSkill()">random skill {{counterSkills}}</button>
+
+<div *ngIf="randomSkill" class="random-skill">{{randomSkill.name}}</div>
 <ul class="used-skills">
     <li *ngFor="let skill of usedSkills">
         <span class="rounded-icon">
@@ -36,3 +38,14 @@
         </a>
     </li>
 </ul>
+
+<div id="openModal" class="modalDialog" [class.open]="modalIsOpen">
+    <div>
+        <a href="#close" title="Close" class="close" (click)="modalIsOpen = false">&#10005;</a>
+        <h2>Congratulations!</h2>
+        <p>You used {{counterSkills}} skills!</p>
+        <p>
+            <button type="button" (click)="restartGame(); modalIsOpen = false">Retry</button>
+        </p>
+    </div>
+</div>
