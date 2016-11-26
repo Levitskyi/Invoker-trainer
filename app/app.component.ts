@@ -31,7 +31,6 @@ export class AppComponent {
         this.skillServie.getSkills().then(skills => {
             this.skills = skills;
         });
-        console.log('test');
     }
 
     getMainSKills(): void {
