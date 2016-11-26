@@ -37,6 +37,7 @@ export class AppComponent {
         this.skillServie.getMainSkills().then(mainSkills => {
             this.mainSkills = mainSkills;
         });
+        console.log('test');
     }
 
     ngOnInit(): void {
